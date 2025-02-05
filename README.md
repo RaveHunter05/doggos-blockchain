@@ -15,4 +15,4 @@ Our goal is to empower pet care with a reliable, tamper-proof system that enhanc
 - **Base**: We are using Base as a platform to build the AI agent that will guide users through the application.
 - **React**: We are using React to build the front-end of the application.
 - **Nest.js**: We are using Nest.js to build the back-end of the application.
-- **Privy.io**: We are using Privy.io to build the user authentication system and provide embedded wallets.
+- **Privy.io**: We are using Privy to provide server wallets and policy engine rules.
