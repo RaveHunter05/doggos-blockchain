@@ -9,17 +9,7 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "defaultAdmin",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "pauser",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "minter",
+						"name": "_defaultAdmin",
 						"type": "address"
 					}
 				],
@@ -624,6 +614,32 @@
 			{
 				"inputs": [
 					{
+						"internalType": "address",
+						"name": "_minter",
+						"type": "address"
+					}
+				],
+				"name": "grantMinterRole",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_pauser",
+						"type": "address"
+					}
+				],
+				"name": "grantPauserRole",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "bytes32",
 						"name": "role",
 						"type": "bytes32"
@@ -742,6 +758,44 @@
 			{
 				"inputs": [
 					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "petOwnership",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "petToVeterinary",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
 						"internalType": "bytes32",
 						"name": "role",
 						"type": "bytes32"
@@ -753,6 +807,32 @@
 					}
 				],
 				"name": "renounceRole",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_minter",
+						"type": "address"
+					}
+				],
+				"name": "revokeMinterRole",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_pauser",
+						"type": "address"
+					}
+				],
+				"name": "revokePauserRole",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -779,12 +859,62 @@
 				"inputs": [
 					{
 						"internalType": "address",
-						"name": "to",
+						"name": "owner",
 						"type": "address"
 					},
 					{
 						"internalType": "string",
 						"name": "uri",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "name",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "breed",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "color",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "age",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "weight",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "sex",
+						"type": "string"
+					},
+					{
+						"internalType": "string",
+						"name": "birthdate",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "vaccinesList",
+						"type": "uint256[]"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "surgeries",
+						"type": "uint256[]"
+					},
+					{
+						"internalType": "string",
+						"name": "status",
 						"type": "string"
 					}
 				],
@@ -858,6 +988,19 @@
 					}
 				],
 				"name": "setApprovalForAll",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "setPetInSurgery",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -988,6 +1131,19 @@
 					}
 				],
 				"name": "transferFrom",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					}
+				],
+				"name": "unassignVeterinary",
 				"outputs": [],
 				"stateMutability": "nonpayable",
 				"type": "function"
@@ -1217,7 +1373,7 @@
 			"bytecodeHash": "ipfs"
 		},
 		"optimizer": {
-			"enabled": false,
+			"enabled": true,
 			"runs": 200
 		},
 		"remappings": []
@@ -1424,11 +1580,11 @@
 			]
 		},
 		"contracts/DoggosToken.sol": {
-			"keccak256": "0xfdf9f46f3ef81bbe7ff8d730ebb48e2f203886f2fb8be87d0386f70d5151d71a",
+			"keccak256": "0xf727c6be25b2deca8633250a83a76edfc18928f13091343cc73cfaa03bd00aa6",
 			"license": "MIT",
 			"urls": [
-				"bzz-raw://725ed2cf71dbed73eb8e1ca3048abca6961557b046b4e713ec484bcdb074b0b3",
-				"dweb:/ipfs/QmWp17FzKCWAWcgqTnzXDka2QXzRAUv7urtpSkyMpcEyyp"
+				"bzz-raw://9ee19f14d0e6d354f6fceb3a28d40b73bc7ebb1963f8d3a70e4b585567f445a5",
+				"dweb:/ipfs/QmejC2CxQ8Es5odeH52CQeXXCpMgEN1mfjDA9nr5Un4BHr"
 			]
 		}
 	},
