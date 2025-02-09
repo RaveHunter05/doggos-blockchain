@@ -1,9 +1,7 @@
 "use client";
 
-import Portal from "@/components/graphics/portal";
-import { PrivyClient, useLogin } from "@privy-io/react-auth";
+import { useLogin } from "@privy-io/react-auth";
 
-import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -29,7 +27,7 @@ export default function LoginPage() {
                 alt="Privy Logo"
                 width={200}
                 height={200}
-		className="rounded-full"
+                className="rounded-full"
               />
             </div>
             <div className="mt-6 flex justify-center text-center">
