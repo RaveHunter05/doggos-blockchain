@@ -1,9 +1,8 @@
 import { PrivyClient } from '@privy-io/server-auth';
 
 class PrivyUtil {
-  static PRIVY_APP_ID: string = '';
-  static PRIVY_APP_SECRET: string = '';
-  static PRIVY_APP_SCOPE: string = '';
+  static PRIVY_APP_ID: string = process.env.PRIVY_APP_ID;
+  static PRIVY_APP_SECRET: string = process.env.PRIVY_APP_SECRET;
 
   constructor() {}
 
@@ -47,6 +46,16 @@ class PrivyUtil {
     } catch (error) {
       console.error(error);
       throw new Error('Error sending transaction');
+    }
+  }
+
+  async getServerWallets() {
+    try {
+      const wallets = await this.privyClient.walletApi.getWallets();
+      return wallets;
+    } catch (error) {
+      console.error(error);
+      throw new Error('Error getting wallets');
     }
   }
 }
