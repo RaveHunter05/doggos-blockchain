@@ -20,7 +20,6 @@ import {
 	PawPrint,
 	Stethoscope,
 } from "lucide-react";
-import ConnectionStatus from "./connection-status";
 
 export function AppSidebar() {
 	return (
@@ -92,7 +91,6 @@ export function AppSidebar() {
 							<Cog /> Settings
 						</SidebarMenuButton>
 					</SidebarMenuItem>
-					<ConnectionStatus />
 				</SidebarMenu>
 			</SidebarFooter>
 		</Sidebar>
