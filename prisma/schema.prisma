@@ -1,0 +1,174 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique @db.VarChar(50)
+  username  String   @unique @db.VarChar(50)
+  password  String   @db.VarChar(100)
+  hash      String   @db.VarChar(100)
+  hashedRt  String?  @db.VarChar(100)
+  userType  Role     @default(GUEST)
+  isActive  Boolean  @default(true) @db.Boolean
+  createdAt DateTime @default(now()) @db.Timestamp()
+  updatedAt DateTime @default(now()) @db.Timestamp()
+
+  personaInfo     Persona[] @relation("user")
+  createdPersonas Persona[] @relation("createdPersonas")
+  updatedPersonas Persona[] @relation("updatedPersonas")
+  ownedFarms      Farm[]    @relation("farmsOwnership")
+}
+
+model Persona {
+  id            Int      @id @default(autoincrement())
+  firstName     String   @db.VarChar(50)
+  middleName    String?  @db.VarChar(50)
+  firstSurname  String   @db.VarChar(50)
+  secondSurname String?  @db.VarChar(50)
+  nationalId    String?  @unique @db.VarChar(75)
+  birthdate     DateTime @db.Timestamp()
+  isActive      Boolean  @default(true) @db.Boolean
+  createdAt     DateTime @default(now()) @db.Timestamp()
+  updatedAt     DateTime @default(now()) @db.Timestamp()
+  userId        Int?
+  createdById   Int?
+  updatedById   Int?
+
+  user User? @relation("user", fields: [userId], references: [id])
+
+  createdBy User? @relation("createdPersonas", fields: [createdById], references: [id])
+  updatedBy User? @relation("updatedPersonas", fields: [updatedById], references: [id])
+}
+
+model Farm {
+  id        Int      @id @default(autoincrement())
+  name      String   @db.VarChar(100)
+  location  String   @db.VarChar(100)
+  phone     String   @db.VarChar(20)
+  email     String   @db.VarChar(50)
+  isActive  Boolean  @default(true) @db.Boolean
+  createdAt DateTime @default(now()) @db.Timestamp()
+  updatedAt DateTime @default(now()) @db.Timestamp()
+
+  ownerId              Int?
+  owner                User?            @relation("farmsOwnership", fields: [ownerId], references: [id])
+  sendTransferFarm     CattleTransfer[] @relation("fromFarm")
+  receivedTransferFarm CattleTransfer[] @relation("toFarm")
+  cattles              Cattle[]         @relation("farmWhereBelong")
+}
+
+model Cattle {
+  id           Int          @id @default(autoincrement())
+  name         String       @db.VarChar(150)
+  sex          AnimalSex    @default(MALE)
+  age          String       @db.VarChar(50)
+  birthdate    DateTime?    @db.Timestamp()
+  breed        String?      @db.VarChar(100)
+  status       CattleStatus @default(HEALTHY)
+  weight       Float        @db.Real
+  height       Float        @db.Real
+  isVaccinated Boolean      @default(false) @db.Boolean
+  wallet       String?      @db.VarChar(500)
+  farmId       Int
+
+  farm                     Farm                @relation("farmWhereBelong", fields: [farmId], references: [id])
+  cattleVaccinationHistory CattleVaccination[] @relation("referredCattle")
+  veterinaryCheck          VeterinaryCheck[]   @relation("attendedCattle")
+}
+
+model CattleVaccination {
+  id        Int      @id @default(autoincrement())
+  date      DateTime @db.Timestamp()
+  vaccine   String   @db.VarChar(100)
+  dose      String   @db.VarChar(100)
+  createdAt DateTime @default(now()) @db.Timestamp()
+  updatedAt DateTime @default(now()) @db.Timestamp()
+  cattleId  Int
+
+  referredCattle Cattle @relation("referredCattle", fields: [cattleId], references: [id])
+}
+
+model CattleTransfer {
+  id         Int      @id @default(autoincrement())
+  date       DateTime @db.Timestamp()
+  fromFarmId Int
+  toFarmId   Int
+  createdAt  DateTime @default(now()) @db.Timestamp()
+  updatedAt  DateTime @default(now()) @db.Timestamp()
+
+  fromFarm Farm @relation("fromFarm", fields: [fromFarmId], references: [id])
+  toFarm   Farm @relation("toFarm", fields: [toFarmId], references: [id])
+}
+
+model VeterinaryCheck {
+  id          Int                 @id @default(autoincrement())
+  description String              @db.VarChar(500)
+  type        VeterinaryCheckType @default(REGULAR_CHECK)
+  date        DateTime            @db.Timestamp()
+  createdAt   DateTime            @default(now()) @db.Timestamp()
+  updatedAt   DateTime            @default(now()) @db.Timestamp()
+  cattleId    Int
+
+  attendedCattle Cattle @relation("attendedCattle", fields: [cattleId], references: [id])
+}
+
+enum Role {
+  ADMIN
+  FARMER_OWNER
+  FARMER_SUPERVISOR
+  FARMER_WORKER
+  VETERINARY
+  AUTHORITY
+  CUSTOMER
+  GUEST
+}
+
+enum AnimalSex {
+  MALE
+  FEMALE
+}
+
+enum CattleStatus {
+  HEALTHY
+  SOLD
+  DEAD
+  MISSING
+  STOLEN
+  LOST
+  TRANSFERRED
+  PREGNANT
+  LACTATING
+  BREEDING
+  DRY
+  SICK
+  READY_TO_SALE
+  READY_TO_BREED
+  PENDING_VACCINATION
+  PENDING_PREGNANCY
+  PENDING_DRY
+  PENDING_TRANSFER
+  PENDING_SALE
+  PENDING_VETERINARY_CHECK
+}
+
+enum VeterinaryCheckType {
+  REGULAR_CHECK
+  VACCINATION
+  MEDICAL_CHECK
+  PREGNANCY_CHECK
+  BREEDING_CHECK
+  HORMONAL_CHECK
+  DRY_CHECK
+}
